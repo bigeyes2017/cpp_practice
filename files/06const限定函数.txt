@@ -1,0 +1,108 @@
+/*const限定函数体、返回值*/
+
+#include <iostream>
+#include<random>
+#include<ctime>
+using namespace std;
+
+char s[] = "Outside";
+
+const char* test2() {//限定指向内容不能变
+//    s = NULL;
+    return s;
+}
+char const* test4() { return s; }
+
+//char * test12()const {return s;}错误
+
+class A {
+public:
+    A() {}
+    //const成员函数不能调用非const函数
+    char* test3() const
+    {
+        //            test2();此处可以，因为不会影响数据成员。
+        //            modify();此处错误
+
+        cout << s3 << endl;
+
+        s6 = NULL;  //可以修改mutable数据成员
+        if (!s3) cout << "NULL" << endl;
+        else cout << "NOT" << endl;
+
+        return getS2();
+    }
+
+    void modify() {
+        s4 = NULL;
+    }
+
+    char* getS2()const {
+        return s4;
+    }
+
+
+private:
+
+    char s2[10] = "Inside";  
+    
+    char* s4 = s2;
+
+    char s3[10] = "Modify?"; 
+    
+    mutable char* s6 = s3;
+
+
+};
+
+class B {
+public:
+    B(int i = rand(), int j = rand())
+        :a(i), b(j)
+    {}
+    int getA()const { return a; }
+    int getB()const { return b; }
+
+    B& operator=(const B& b){
+    return equalTo(b);
+}
+private:
+    int a, b;
+    B& equalTo(const B& temp) {
+        this->a = temp.a;
+        this->b = temp.b;
+        return *this;
+    }
+};
+ostream& operator << (ostream& os, const B& bb) {
+    os << "(" << bb.getA() << "," << bb.getB() << ")" << endl;
+    return os;
+}
+
+
+
+
+int main() {
+
+    //    const char *c2 = test2();    //限定指向内容不能变
+    //
+    //    cout<<c2<<endl;
+    //
+    //    const char *c4 = test4();   //
+    //    cout<<c4<<endl;
+
+    //    A a;
+    //    cout<<a.test3()<<endl;
+    srand(time(NULL) % 65536);
+
+    B b, b2, b3;
+
+
+    b = b2 = b3;
+    cout << b << "\t" << b2 << "\t" << b3 << endl;
+    (b = b2) = b3;
+    cout << b << "\t" << b2 << "\t" << b3 << endl;
+
+
+    return 0;
+}

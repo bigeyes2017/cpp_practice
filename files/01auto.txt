@@ -1,0 +1,123 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+//据说struct也可以定义函数，默认为public。VS.与class相反。
+struct test {
+	int a = 50;
+	void fun() {
+		cout << "这是一个在结构里的函数" << endl;
+	}
+}stct;
+
+template <typename T,typename T2>
+auto sum(T a, T2 b) {
+	auto c = a + b;
+	return c;
+}
+
+int main() {
+
+	auto a = 5;			//普通调用
+	const auto ca = 10;	//const需要指明，除非是引用
+	auto& ra = ca;
+	//ra = 100;	Wrong!
+
+	cout <<"typeName:\na : " <<typeid(a).name() << endl;
+	cout << "ca : " << typeid(ca).name() << endl;
+	cout << "ra : " << typeid(ra).name() << endl;
+	
+	auto*  pa = new auto (a);	
+	auto** ppa = new auto(&a);
+	cout << "pa : " << typeid(pa).name() << endl;
+	cout << "ppa : " << typeid(ppa).name() << endl;
+	cout << "ppa_size : " << sizeof(**ppa) << endl;
+
+
+	
+	
+	auto pz = new auto (26);	//动态类型指定也可以是int*
+	cout << "pz : " << typeid(pz).name() << endl;
+
+	
+
+	int arr[9];			//auto默认不是&，而是退化为指针
+	auto parr = arr;
+
+	auto& rarr = arr;
+
+	
+	cout << "arr :  " << typeid(arr).name() << endl;
+	cout << "parr : " << typeid(parr).name() << endl;
+	cout << "rarr : " << typeid(rarr).name() << endl;
+	
+	
+	string str{ "To be or not to be This is a question" };
+	char c[1024];
+	strcpy(c, str.c_str());
+
+	cout <<"输出c的值：" <<c << endl;	// c中将空格显示为‘0’
+	char* p = strtok(c, " ");
+	cout << "输出c的值：" << c << endl;	// c中将空格显示为‘0’
+
+	vector<string>s;
+	while (p)
+	{
+		s.push_back(p);
+		p = strtok(NULL, " ");
+	}
+	for (auto i = s.begin(); i != s.end(); i++)	//更易于阅读，auto = vector<string>::iterator
+	{
+		cout << (*i) << endl;
+	}
+
+	for (auto& ch : str) {		//&，这里若是c，则会因为后续字符????而出错。
+		if(isalpha(ch))
+			ch = toupper(ch);
+	}
+	cout << str << endl;
+	
+
+	
+	auto stct2 = stct;			//结构体的自动类型推断。
+	stct2.fun();
+
+	double db = 2.345678909;	//模板类型的自动转换
+	auto sum_val= sum(db, a);
+	cout <<typeid(sum_val).name()<<"模板类型：" << sum_val << endl;
+
+	float f = 2.345678909;
+	auto fsum_val = sum(f, f);
+	cout << typeid(fsum_val).name()<< "模板类型：" << sum_val << endl;
+	   	  
+
+	return 0;
+}
+
+
+输出窗口：**************
+a : int
+ca : int
+ra : int
+pa : int *
+ppa : int * *
+ppa_size : 4
+pz : int *
+arr :  int [9]
+parr : int *
+rarr : int [9]
+输出c的值：To be or not to be This is a question
+输出c的值：To
+To
+be
+or
+not
+to
+be
+This
+is
+a
+question
+TO BE OR NOT TO BE THIS IS A QUESTION
+这是一个在结构里的函数
+double模板类型：7.34568
+float模板类型：7.34568

@@ -1,0 +1,48 @@
+
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+#include <stddef.h>
+
+int main() {
+//函数原型：time_t time(time_t *)
+    time_t now = time(0);   //0或NULL。使用前半部分
+
+    printf("ctime(const time_t*):   %s\n",ctime(&now));
+
+
+    struct tm *tLOCAL,*tGMT;    //详细到秒。可由asctime()函数转换为字符串
+
+
+    tGMT = gmtime(&now);        //未经转换的系统时间，可由mktime(struct tm*)进行反向操作
+    printf("GMT(格林威治)时间是： %s",asctime(tGMT));
+    printf("mktime进行反转：     %ld\n\n",mktime(tGMT));
+
+
+    //tzset();        /* tzset()设置时区： TIME ZONE SET*/
+    tLOCAL = localtime(&now);   //已经时区转换。注意，第一步得到tm指针，第二步得到字符串。
+    printf("当地时间是：%s",asctime(tLOCAL));
+    printf("详细点：%d年%d月%d日%d时%d分%d秒\n一年中的第%d天\n一周中的第%d天\n日光节约时间的旗标DST:%d\n",
+           tLOCAL->tm_year+1900,tLOCAL->tm_mon+1,tLOCAL->tm_mday,tLOCAL->tm_hour,tLOCAL->tm_min,tLOCAL->tm_sec,
+           tLOCAL->tm_yday,tLOCAL->tm_wday,tLOCAL->tm_isdst);
+           //需要注意的是年份加上1900，月份加上1
+           
+    //gmtime_r(const time_t *,struct tm *)和localtime(,)可接受两个参数
+
+
+    delete tLOCAL,tGMT;
+    return 0;
+}
+
+输出窗口：
+ctime(const time_t*):   Sat Apr 18 23:20:17 2020
+
+GMT(格林威治)时间是： Sat Apr 18 15:20:17 2020
+mktime进行反转：     1587194417
+
+当地时间是：Sat Apr 18 23:20:17 2020
+详细点：2020年4月18日23时20分17秒
+一年中的第108天
+一周中的第6天
+日光节约时间的旗标DST:0
+当地时间是：Sat Apr 18 23:20:17 2020

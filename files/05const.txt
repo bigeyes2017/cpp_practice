@@ -1,0 +1,48 @@
+/*const限定变量指针*/
+
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    int a{500};
+    int b[]{1,3,5};
+
+    //在*前,限定指向的内容
+    const int *p = b;
+    int const *p2 = &b[1];
+
+    //在*后，贴身限定指针
+    int * const p3 = &a;
+
+    //在*前*后，指针和内容都限定
+    const int * const p4 = &a;
+
+    cout<<*p<<endl;
+    cout<<*p2<<endl;
+    cout<<*p3<<endl;
+    cout<<*p4<<endl;
+
+
+cout<<"*前限定，指针可以游动"<<endl;
+
+    cout<<*++p<<endl;
+    cout<<*++p2<<endl;
+
+cout<<"*后限定，指向的值可以变"<<endl;
+    cout<<++*p3<<endl;
+
+cout<<"指针限定的值，可以通过变量名改变"<<endl;
+    b[1]++,b[2]++;
+    cout<<*p<<endl;
+    cout<<*p2<<endl;
+
+
+
+    return 0;
+}
+
+
+
+
+

@@ -1,0 +1,66 @@
+内存吃紧时设置共用体
+union U{
+int i2;
+double d;
+};       //每次只能使用一个值，因为内存公用
+U u;  //仍然可定义共用体对象
+
+Union：共用一块内存，各有各的解释方法。即内存分配时，按照最大占用的成员分配，多人共用一份。使用时，大家都往一个地儿写，保留的是最后写入的数据，拿出来的时候，按变量类型来解释内容。
+
+（1）例子：可用共同体检测CPU大小端：
+#include <iostream>
+using namespace std;
+union Node {int a;	char c;}Obj;
+int main(int argc, char* argv[])
+{
+	Obj.a = 1;
+	cout<< "Char大小：" << sizeof(Obj.c) << endl;
+	cout << "Union大小：" << sizeof(Obj)<<endl;
+	if (Obj.c == 1)
+		cout << "Little" << endl;
+	else cout << "Big" << endl;
+	return 0;
+
+}
+输出窗口：
+Char大小：1
+Union大小：4
+Little
+
+struct S{
+    bool tag;
+    union U{
+         int i2;
+         double d;
+    }u;
+    ; 
+};
+S a;
+a.u.i2=5;
+
+（2）Union例子：
+#include <iostream>
+using namespace std;
+union Node {
+	struct {	int a;	char b;	}t;
+	int c;
+}Obj;
+struct {	int a;	char b;	}t;
+int main()
+{	cout << "sizeof(Obj) = " << sizeof(Obj) << endl;
+	cout << "sizeof(ct) = " << sizeof(ct) << endl; //和上面的相等
+	Obj.t.a = 10;
+	Obj.t.b = 97;
+	Obj.c = 20;
+	cout << "Obj.t.a = " << Obj.t.a << endl;
+	cout << "Obj.t.b = " << int(Obj.t.b) << endl;
+	cout << "Obj.c = " << Obj.c << endl;
+	return 0;
+}
+输出窗口：
+sizeof(Obj) = 8
+sizeof(ct) = 8
+Obj.t.a = 20
+Obj.t.b = 97
+Obj.c = 20
+可以看到，Obj.c覆盖了分配空间的前半部分，即Obj.t.a的部分。而后半部分则被保留了。

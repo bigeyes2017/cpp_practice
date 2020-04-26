@@ -1,0 +1,67 @@
+/*访问non-public的虚函数
+
+另外，如果父类的虚函数是private或是protected的，但这些非public的虚函数同样会存在于虚函数表中*/
+
+class Base {
+    private:
+            virtual void f() { cout << "Base::f" << endl; }
+
+};
+
+class Derive : public Base{
+
+};
+
+typedef void(*Fun)(void);
+
+void main() {
+    Derive d;
+    Fun  pFun = (Fun)*((int*)*(int*)(&d)+0);
+    pFun();
+}
+
+
+
+/*已测试：任何妄图使用父类指针想调用子类中的未覆盖父类的成员函数的行为都会被编译器视为非法，所以，这样的程序根本无法编译通过。但在运行时，我们可以通过指针的方式访问虚函数表来达到违反C++语义的行为。（关于这方面的尝试，通过阅读后面附录的代码，相信你可以做到这一点）*/
+
+
+
+#include <iostream>
+using namespace std;
+
+class Base {
+
+};
+
+class Derive : public Base{
+	virtual void g() { cout << "Derive::g" << endl; }
+};
+
+typedef void(*Fun)(void);
+
+int main() {
+    Derive d;
+    Fun  pFun = (Fun)*((int*)*(int*)(&d)+0);
+    pFun();		//Derive::g
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

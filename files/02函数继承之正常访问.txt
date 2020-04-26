@@ -1,0 +1,48 @@
+#include <iostream>
+using namespace std;
+
+class Father {
+    public:
+        void unReplace (){cout<<"Father::can't Replace"<<endl;}
+        virtual  void Replace(){cout<<"Father::Replace"<<endl;}
+
+};
+
+class Son : public Father{
+    public:
+        void unReplace (){cout<<"Son::can't Replace"<<endl;}
+        void Replace(){cout<<"Son::Replace"<<endl;}
+
+
+        virtual void illegalVisit(){
+            cout<< "There is in son's PRIVATE"<<endl;
+        }
+
+};
+
+
+typedef void (*Fun) (void);
+
+int main() {
+    Son son;
+//使用子类对象地址初始化父类指针，实现多态。
+    Father *pF = &son;
+
+    pF->unReplace();
+
+
+    pF->Replace();
+
+
+//违规访问Son自有虚函数,不能是Private，需要加Virtual。
+
+    Fun pFun = (Fun)*((int*)*(int*)(&son)+1);
+    
+    pFun();
+
+//也可以访问父类私有函数
+
+
+    return 0;
+}
+

@@ -1,0 +1,80 @@
+#include <stdio.h>
+using namespace std;
+//不能存在相同的枚举类型:BOOLEAN != week
+//不能存在相同的枚举元素：FALSE不能加到week中
+enum BOOLEAN {FALSE,TRUE}bType2 = FALSE;            //也可以类型定义、变量声明、赋初值一起进行
+
+typedef enum {SUN=7,MON=1,TUE,WED,TUR,FRI,SAT}week;//week = enum XXX,且XXX可以省略。
+
+enum {      //此处示例别名定义：替代#define
+    bell = '\a',
+    backspace = '\b',
+    htab = '\t',
+    vtab = '\v',
+    RETURN ='\r',
+    newline = '\n',
+    space = ' '
+}ODD;//此处有；
+
+//枚举常量！若手动定值，则不能为字符串或空字符
+//enum test{t = 't',y='y'};
+
+
+void printBOOLEANname(enum BOOLEAN i);
+
+
+int main() {
+
+    enum BOOLEAN bType;     //枚举变量bType
+    bType = (enum   BOOLEAN) 1;            //若要赋值整数，必须强制转换
+    printf("bType 类型: %d %c",bType,htab);
+
+    printf("bType2 类型: %d %c",bType2,newline);
+    printBOOLEANname(bType);
+    printBOOLEANname(bType2);
+
+    week today = SAT;       //可直接 = {枚举类型之一}
+
+    printf("今天是一周的第%d天 %c %c",today,newline,RETURN);
+
+    printf("类型大小:\nenum BOOLEAN  %d\n",sizeof(enum BOOLEAN));
+    printf("BOOLEAN     %d\n",sizeof(BOOLEAN));
+    printf("bType       %d\n",sizeof(bType));
+    printf("week        %d\n",sizeof(week));
+    printf("ODD         %d\n%c",sizeof(ODD),newline);
+    printf("TRUE        %d\n",sizeof(TRUE));
+    printf("FALSE       %d\n",sizeof(FALSE));
+    printf("ODD         %d\n",sizeof(ODD));
+    printf("SAT         %d\n",sizeof(SAT));
+    printf("newline     %d\n",sizeof(newline));
+return 0;
+}
+void printBOOLEANname(enum BOOLEAN i){
+    switch (i){
+    case 0:
+        printf("(%s)\n","FALSE");   break;
+    case 1:
+        printf("(%s)\n","TRUE");   break;
+
+    default:
+        printf("Wrong Type");
+    }
+}
+
+
+输出窗口：
+bType 类型: 1   bType2 类型: 0
+(TRUE)
+(FALSE)
+今天是一周的第6天
+类型大小:
+enum BOOLEAN  4
+BOOLEAN     4
+bType       4
+week        4
+ODD         4
+TRUE        4
+FALSE       4
+ODD         4
+SAT         4
+newline     4
