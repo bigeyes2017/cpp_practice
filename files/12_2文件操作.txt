@@ -1,0 +1,79 @@
+#include<iostream>
+#include<fstream>
+//判断文件目录是否存在
+#include<io.h>
+#include<direct.h>
+using namespace std;
+
+int main() {
+   
+    const char* path = R"(C:\Users\liuwenbo\Desktop\C++class\12文件操作)";
+
+    if (-1 == access(path, 0)) {   
+        mkdir(path);        //必须且仅能创建文件夹
+
+        cout<<"文件经io（access）和direct（mkdir）创建"<<endl;        
+    }
+    //仅为测试access使用。返回值-1表示不存在，0表示存在。
+    else {
+        cout << "路径存在" << endl;
+    }
+    if (-1 == access(R"(C:\Users\liuwenbo\Desktop\C++class\12文件操作.txt)", 0)) {
+        cout << "12文件操作.txt文件不存在" << endl;
+    }
+    else {
+        cout << "12文件操作.txt文件存在" << endl;
+    }
+    if (-1 == access(R"(C:\Users\liuwenbo\Desktop\C++class\xyz.txt)", 0)) {
+        cout << "xyz.txt文件不存在" << endl;
+    }
+    else {
+        cout << "xyz.txt存在" << endl;
+    }
+    
+
+    
+    fstream fio(R"(C:\Users\liuwenbo\Desktop\C++class\12文件操作.txt)", ios::out|ios::app);
+    /*  如果是新建，那么必须：有“out”,不能有“in”。
+        添加到末尾，out+app。（ofstream默认是out+trunc，即先删除文件）
+    */
+
+    if (fio) {
+        cout << "文件已经被创建" << endl;
+    }
+
+    
+
+    if (fio.is_open()) { //写入
+        fio << "是真的：这个文件用来练习c++语言文件操作\n";
+
+        fio.close();
+    }
+
+    ifstream fin;
+    fin.open(R"(C:\Users\liuwenbo\Desktop\C++class\12文件操作.txt)");
+    //默认in方式
+
+    char c[1024];
+    if (fin.is_open()) {
+        while (fin.good())
+        {
+            fin.getline(c, 1023);
+            //第二个参数是遇到换行符之前，允许接受的最大字符数
+            cout << c << endl;
+        }
+    }
+    return 0;
+}
+
+输出窗口：
+路径存在
+12文件操作.txt文件存在
+xyz.txt文件不存在
+文件已经被创建
+这个文件用来练习c语言文件操作
+这个文件用来练习c++语言文件操作
+是真的：这个文件用来练习c++语言文件操作
+是真的：这个文件用来练习c++语言文件操作
+是真的：这个文件用来练习c++语言文件操作
+是真的：这个文件用来练习c++语言文件操作
